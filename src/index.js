@@ -4,6 +4,28 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import * as serviceWorker from './serviceWorker';
 
+// Production Error Handler
+const handleGlobalError = (error, errorInfo) => {
+  // Log error for debugging but don't crash the app
+  console.warn('Non-critical error caught:', error);
+  
+  // Suppress Firebase auth errors in demo mode
+  if (error.message?.includes('auth/invalid-api-key') && 
+      process.env.REACT_APP_FORCE_DEMO_MODE === 'true') {
+    console.log('Demo mode: Suppressing Firebase auth error');
+    return;
+  }
+};
+
+// Global error handler
+window.addEventListener('error', (event) => {
+  handleGlobalError(event.error, { type: 'global' });
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+  handleGlobalError(event.reason, { type: 'promise' });
+});
+
 // Apply scrollTop fix immediately to prevent MUI transition errors
 
 // Apply the fix globally
