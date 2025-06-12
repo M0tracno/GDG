@@ -1,0 +1,318 @@
+# Educational Management System - Enhanced CI/CD Pipeline
+# Includes performance monitoring, security audits, and comprehensive testing
+
+name: 🏗️ Enhanced CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run security audit weekly on Sundays at 02:00 UTC
+    - cron: '0 2 * * 0'
+
+env:
+  NODE_VERSION: '18'
+  CACHE_VERSION: 1
+
+jobs:
+  # 🧪 Enhanced Testing with Performance and Security
+  test:
+    name: 🧪 Enhanced Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        test-suite: [backend, frontend, performance, security]
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # Backend Testing
+      - name: 🔧 Backend Tests
+        if: matrix.test-suite == 'backend'
+        run: |
+          cd backend
+          npm ci
+          npm test
+        env:
+          NODE_ENV: test
+          JWT_SECRET: test_jwt_secret
+
+      # Frontend Testing
+      - name: 🎨 Frontend Tests
+        if: matrix.test-suite == 'frontend'
+        run: |
+          npm ci
+          npm test -- --coverage --watchAll=false
+        env:
+          CI: true
+          REACT_APP_API_URL: http://localhost:5000
+          REACT_APP_FORCE_DEMO_MODE: true
+          NODE_ENV: test
+
+      # Performance Testing
+      - name: ⚡ Performance Tests
+        if: matrix.test-suite == 'performance'
+        run: |
+          npm ci
+          npm run test:performance
+          node scripts/performanceAnalysis.js
+
+      # Security Testing
+      - name: 🔒 Security Tests
+        if: matrix.test-suite == 'security'
+        run: |
+          npm ci
+          npm run test:security
+          node scripts/securityAudit.js
+
+      - name: 📊 Upload Coverage
+        if: matrix.test-suite == 'frontend'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+
+      - name: 📤 Upload Test Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports-${{ matrix.test-suite }}
+          path: |
+            ./test-results/
+            ./performance-reports/
+            ./security-reports/
+          retention-days: 30
+
+  # 🔒 Comprehensive Security Audit
+  security-audit:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔗 Install Dependencies
+        run: npm ci
+
+      - name: 🔍 NPM Security Audit
+        run: |
+          npm audit --audit-level moderate || true
+          npm audit --json > npm-audit.json || true
+
+      - name: 🛡️ Custom Security Scan
+        run: |
+          node scripts/securityAudit.js
+          echo "✅ Custom security audit completed"
+
+      - name: 🔒 SAST Scan with CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: javascript
+
+      - name: 🔍 Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+
+      - name: 📤 Upload Security Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: security-reports
+          path: |
+            ./security-reports/
+            ./npm-audit.json
+          retention-days: 30
+
+  # ⚡ Performance Analysis
+  performance-analysis:
+    name: ⚡ Performance Analysis
+    runs-on: ubuntu-latest
+    needs: test
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔗 Install Dependencies
+        run: npm ci
+
+      - name: 🏗️ Build Application
+        run: npm run build
+
+      - name: 📊 Performance Analysis
+        run: |
+          node scripts/performanceAnalysis.js
+          echo "✅ Performance analysis completed"
+
+      - name: 📤 Upload Performance Reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: performance-reports
+          path: ./performance-reports/
+          retention-days: 30  # 🚀 Enhanced Build and Deploy
+  build:
+    name: 🚀 Enhanced Build & Deploy
+    needs: [test, security-audit, performance-analysis]
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🔗 Install Dependencies & Build
+        run: |
+          npm ci
+          npm run build
+        env:
+          CI: false
+          REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
+          REACT_APP_FORCE_DEMO_MODE: ${{ secrets.REACT_APP_FORCE_DEMO_MODE }}
+          REACT_APP_GEMINI_API_KEY: ${{ secrets.REACT_APP_GEMINI_API_KEY }}
+
+      - name: 🧪 Post-Build Verification
+        run: |
+          # Verify build artifacts
+          ls -la build/
+          
+          # Run post-build performance check
+          node scripts/performanceAnalysis.js --build-only
+
+      - name: 📦 Package Application
+        run: |
+          tar -czf build-${{ github.sha }}.tar.gz build/
+          echo "✅ Application packaged successfully"
+
+      - name: 📤 Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-artifacts
+          path: |
+            ./build/
+            ./build-*.tar.gz
+          retention-days: 30
+
+  # 📊 Consolidated Reporting
+  generate-reports:
+    name: 📊 Generate Reports
+    runs-on: ubuntu-latest
+    needs: [test, security-audit, performance-analysis, build]
+    if: always()
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 📥 Download All Reports
+        uses: actions/download-artifact@v3
+
+      - name: 📊 Consolidate Reports
+        run: |
+          mkdir -p consolidated-reports
+          echo "📊 Consolidating all test and analysis reports..."
+          
+          # Create summary report
+          echo "# 📊 CI/CD Pipeline Summary" > consolidated-reports/summary.md
+          echo "**Repository:** ${{ github.repository }}" >> consolidated-reports/summary.md
+          echo "**Branch:** ${{ github.ref_name }}" >> consolidated-reports/summary.md
+          echo "**Commit:** ${{ github.sha }}" >> consolidated-reports/summary.md
+          echo "**Build Status:** ${{ job.status }}" >> consolidated-reports/summary.md
+          echo "" >> consolidated-reports/summary.md
+          
+          # Add links to detailed reports
+          echo "## 📁 Detailed Reports" >> consolidated-reports/summary.md
+          echo "- [Security Audit](./security-reports/)" >> consolidated-reports/summary.md
+          echo "- [Performance Analysis](./performance-reports/)" >> consolidated-reports/summary.md
+          echo "- [Test Results](./test-results/)" >> consolidated-reports/summary.md
+
+      - name: 📤 Upload Consolidated Reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: consolidated-reports
+          path: ./consolidated-reports/
+          retention-days: 90
+
+  # 🔄 Dependency Management
+  dependency-update:
+    name: 🔄 Dependency Updates
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: 🔄 Update Dependencies
+        run: |
+          npx npm-check-updates -u
+          npm install
+          npm audit fix --force || true
+
+      - name: 🧪 Test After Updates
+        run: |
+          npm test -- --watchAll=false
+          node scripts/securityAudit.js
+
+      - name: 📝 Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: '🔄 chore: automated dependency updates'
+          title: '🔄 Automated Dependency Updates'
+          body: |
+            ## 🔄 Automated Dependency Updates
+            
+            This PR contains automated dependency updates with security fixes.
+            
+            ### ✅ Automated Checks:
+            - Updated npm dependencies to latest versions
+            - Fixed security vulnerabilities
+            - Ran comprehensive test suite
+            - Performed security audit
+            
+            Please review and merge if all checks pass.
+          branch: automated-dependency-updates
+          delete-branch: true
+

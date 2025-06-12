@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Favicon Generator</title>
+</head>
+<body>
+  <h1>Generating favicon...</h1>
+  <canvas id="canvas16" width="16" height="16" style="display:none;"></canvas>
+  <canvas id="canvas32" width="32" height="32" style="display:none;"></canvas>
+  
+  <script>
+    // Function to generate a favicon and download it
+    function generateFavicon() {
+      const canvas16 = document.getElementById('canvas16');
+      const ctx16 = canvas16.getContext('2d');
+      
+      // Draw favicon for 16x16
+      ctx16.fillStyle = '#1976d2'; // Primary blue color
+      ctx16.fillRect(0, 0, 16, 16);
+      ctx16.fillStyle = 'white';
+      ctx16.font = 'bold 10px Arial';
+      ctx16.textAlign = 'center';
+      ctx16.textBaseline = 'middle';
+      ctx16.fillText('A', 8, 8);
+      
+      // Create 32x32 version
+      const canvas32 = document.getElementById('canvas32');
+      const ctx32 = canvas32.getContext('2d');
+      
+      ctx32.fillStyle = '#1976d2'; // Primary blue color
+      ctx32.fillRect(0, 0, 32, 32);
+      ctx32.fillStyle = 'white';
+      ctx32.font = 'bold 20px Arial';
+      ctx32.textAlign = 'center';
+      ctx32.textBaseline = 'middle';
+      ctx32.fillText('A', 16, 16);
+      
+      // Create download links
+      const link16 = document.createElement('a');
+      link16.download = 'favicon-16x16.png';
+      link16.href = canvas16.toDataURL('image/png');
+      document.body.appendChild(link16);
+      link16.click();
+      
+      const link32 = document.createElement('a');
+      link32.download = 'favicon-32x32.png';
+      link32.href = canvas32.toDataURL('image/png');
+      document.body.appendChild(link32);
+      link32.click();
+      
+      document.body.innerHTML += '<h2>Favicon PNGs generated! You\'ll need to convert these to .ico format.</h2>';
+    }
+    
+    // Generate favicon when page loads
+    window.onload = function() {
+      setTimeout(generateFavicon, 1000);
+    };
+  </script>
+</body>
+</html> 

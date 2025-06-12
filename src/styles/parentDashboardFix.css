@@ -1,0 +1,95 @@
+/* Parent Dashboard Card Visibility Fix */
+/* This CSS file ensures all cards in the parent dashboard have light backgrounds */
+
+/* Override any dark theme settings for parent dashboard cards */
+.parent-dashboard .MuiCard-root {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  color: #1a1a1a !important;
+}
+
+/* More specific selectors for stubborn cards */
+.parent-dashboard .MuiCard-root[style*="background"] {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Ensure text is dark and visible */
+.parent-dashboard .MuiTypography-root {
+  color: #1a1a1a !important;
+}
+
+.parent-dashboard .MuiTypography-body1,
+.parent-dashboard .MuiTypography-body2 {
+  color: #666666 !important;
+}
+
+/* Fix any gradient backgrounds that might be dark */
+.parent-dashboard .MuiCard-root[style*="linear-gradient"] {
+  background-color: #ffffff !important;
+}
+
+/* Ensure card content is visible */
+.parent-dashboard .MuiCardContent-root {
+  background-color: transparent !important;
+  color: #1a1a1a !important;
+}
+
+/* Fix chip colors to be visible */
+.parent-dashboard .MuiChip-root {
+  color: #1a1a1a !important;
+}
+
+/* Fix avatar text color */
+.parent-dashboard .MuiAvatar-root {
+  color: #ffffff !important;
+}
+
+/* Additional overrides for events cards and any missed cards */
+.parent-dashboard div[class*="MuiCard"] {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Force white background on all card-like containers */
+.parent-dashboard [class*="Card"],
+.parent-dashboard [class*="card"] {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+}
+
+/* Ultra-specific overrides for Events & Meetings cards */
+.parent-dashboard .MuiGrid-container .MuiGrid-item .MuiCard-root {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+  background-image: none !important;
+}
+
+/* Override any inherited dark backgrounds */
+.parent-dashboard * {
+  background-color: inherit !important;
+}
+
+.parent-dashboard .MuiCard-root * {
+  color: #1a1a1a !important;
+}
+
+/* Extreme override - target all possible card selectors */
+.parent-dashboard [role="presentation"],
+.parent-dashboard [class*="card"],
+.parent-dashboard [class*="Card"],
+.parent-dashboard .MuiPaper-root {
+  background: #ffffff !important;
+  background-color: #ffffff !important;
+}
+
+/* Override motion.div dark backgrounds */
+.parent-dashboard motion-div,
+.parent-dashboard [data-framer-component-type] {
+  background-color: #ffffff !important;
+}
+
+/* Make sure no dark gradients can override */
+.parent-dashboard * {
+  background-image: none !important;
+}

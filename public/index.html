@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta
+      name="description"
+      content="AI Teacher Assistant - Enhancing education with AI"
+    />
+    <!-- Inline SVG favicon to avoid 404 errors -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>" />
+    
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <title>AI Teacher Assistant</title>
+    
+    <!-- Demo mode initialization - runs before React loads -->
+    <script>
+      // For GitHub Pages SPA routing - parse the path from the query string
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+            l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location));
+      
+      // Simple error handlers that won't break the app
+      window.addEventListener('error', function(e) {
+        console.log('Global error caught:', e.message);
+        
+        // Prevent resource errors from breaking the app
+        if (e.filename && (
+            e.filename.includes('favicon.ico') || 
+            e.filename.includes('logo') || 
+            e.filename.includes('manifest.json') ||
+            e.filename.includes('%PUBLIC_URL%')
+        )) {
+          console.log('Suppressed non-critical resource error:', e.filename);
+          return true; // Prevent default error handling
+        }
+        
+        // Simple error handlers that won't break the app
+        try {
+          if (e.error && typeof e.error.toString === 'function') {
+            const errorString = e.error.toString();
+            if (errorString.includes('auth') || errorString.includes('failed')) {
+              console.log('Authentication error detected:', errorString);
+            }
+          }
+        } catch (innerError) {
+          console.log('Error in error handler:', innerError);
+        }
+      }, true);
+      
+      // Handle unhandled promise rejections
+      window.addEventListener('unhandledrejection', function(event) {
+        console.log('Unhandled rejection occurred');
+        
+        // Log auth/firebase rejections for debugging
+        try {
+          if (event.reason && typeof event.reason.toString === 'function') {
+            const reasonString = event.reason.toString();
+            if (reasonString.includes('auth') || reasonString.includes('failed')) {
+              console.log('Auth-related rejection:', reasonString);
+            }
+          }
+        } catch (innerError) {
+          console.log('Error in rejection handler:', innerError);
+        }
+      });
+
+      // Auto-recovery for white screens - if the root element doesn't render within 5 seconds
+      setTimeout(function() {
+        try {
+          if (!document.getElementById('root') || !document.getElementById('root').children.length) {
+            console.log('Detected potential white screen - logging for debugging');
+            // Don't force demo mode, just log the issue
+          }
+        } catch (error) {
+          console.log('Error in auto-recovery check:', error);
+        }
+      }, 5000);
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+</html> 
