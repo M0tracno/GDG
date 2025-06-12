@@ -8,11 +8,40 @@ class SecurityService {
     this.isInitialized = false;    this.securityPolicies = {
       csp: {
         'default-src': ["'self'"],
-        'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'", 'https://*.googleapis.com', 'https://*.firebase.com', 'https://*.googletagmanager.com', 'https://*.google-analytics.com'],
+        'script-src': [
+          "'self'", 
+          "'unsafe-inline'", 
+          "'unsafe-eval'", 
+          'https://*.googleapis.com', 
+          'https://*.firebase.com', 
+          'https://*.googletagmanager.com', 
+          'https://*.google-analytics.com',
+          'https://apis.google.com' // Explicitly allow Firebase Auth scripts
+        ],
+        'script-src-elem': [
+          "'self'", 
+          "'unsafe-inline'",
+          'https://*.googleapis.com',
+          'https://*.firebase.com',
+          'https://*.googletagmanager.com',
+          'https://*.google-analytics.com',
+          'https://apis.google.com' // Explicitly allow Firebase Auth scripts
+        ],
         'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         'font-src': ["'self'", 'https://fonts.gstatic.com'],
         'img-src': ["'self'", 'data:', 'https:'],
-        'connect-src': ["'self'", 'http://localhost:*', 'https://localhost:*', 'https://*.firebase.com', 'https://*.firebaseio.com', 'https://*.googleapis.com', 'https://*.google-analytics.com', 'https://www.google-analytics.com'],
+        'connect-src': [
+          "'self'", 
+          'http://localhost:*', 
+          'https://localhost:*', 
+          'https://*.firebase.com', 
+          'https://*.firebaseio.com', 
+          'https://*.googleapis.com', 
+          'https://*.google-analytics.com', 
+          'https://www.google-analytics.com',
+          'https://firebaseinstallations.googleapis.com', // Firebase Installations API
+          'https://identitytoolkit.googleapis.com' // Firebase Auth API
+        ],
         'frame-src': ["'none'"],
         'object-src': ["'none'"],
         'base-uri': ["'self'"],
@@ -82,17 +111,16 @@ class SecurityService {
     noSniff.content = 'nosniff';
     document.head.appendChild(noSniff);
   }
-
   /**
    * Setup Clickjacking Protection
    */
   setupClickjackingProtection() {
     if (typeof document === 'undefined') return;
 
-    const frameOptions = document.createElement('meta');
-    frameOptions.httpEquiv = 'X-Frame-Options';
-    frameOptions.content = 'DENY';
-    document.head.appendChild(frameOptions);
+    // Note: X-Frame-Options can only be set via HTTP headers, not meta tags
+    // This should be configured at the server/hosting level
+    // For now, we'll skip the meta tag to avoid console warnings
+    console.log('🔒 X-Frame-Options should be configured at server/hosting level');
   }
 
   /**

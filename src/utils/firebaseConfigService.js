@@ -27,24 +27,29 @@ const isFirebaseConfigured = () => {
   });
 };
 
-// Production mode - NO DEMO MODE allowed
 // Check if we should use demo mode (only in development with explicit flag)
 const isDemoMode = () => {
+  // Check for explicit demo mode flag first
+  const forceDemoMode = process.env.REACT_APP_FORCE_DEMO_MODE === 'true';
+  
+  if (forceDemoMode) {
+    return true; // Demo mode explicitly enabled
+  }
+  
   // Only allow demo mode in development and when explicitly forced
   if (process.env.NODE_ENV === 'production') {
     return false; // Never use demo mode in production
   }
   
-  const forceDemoMode = process.env.REACT_APP_FORCE_DEMO_MODE === 'true';
+  // In development, use demo mode if Firebase is not configured
+  const firebaseConfigured = isFirebaseConfigured();
   
-  if (!isFirebaseConfigured() && !forceDemoMode) {
-    throw new Error(
-      'Firebase is not properly configured! Please set up Firebase authentication. ' +
-      'See FIREBASE_PRODUCTION_SETUP.md for instructions.'
-    );
+  if (!firebaseConfigured) {
+    console.warn('Firebase not configured in development - using demo mode');
+    return true;
   }
   
-  return forceDemoMode;
+  return false;
 };
 
 // Get appropriate Firebase implementations

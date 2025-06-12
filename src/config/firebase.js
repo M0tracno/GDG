@@ -17,35 +17,77 @@ const firebaseConfig = {
 const isValidConfig = () => {
   return firebaseConfig.apiKey && 
          firebaseConfig.projectId && 
-         firebaseConfig.apiKey !== 'your_firebase_api_key_here';
+         firebaseConfig.apiKey !== 'your_firebase_api_key_here' &&
+         !firebaseConfig.apiKey.includes('demo') &&
+         !firebaseConfig.apiKey.includes('test') &&
+         firebaseConfig.apiKey.startsWith('AIza'); // Real Firebase API keys start with this
 };
 
 let app, auth, analytics;
 
-try {
-  // Initialize Firebase
-  app = initializeApp(firebaseConfig);
-  
-  // Initialize Firebase Authentication
-  auth = getAuth(app);
-  
-  // Initialize Analytics only if config is valid
-  if (isValidConfig() && typeof window !== 'undefined') {
-    analytics = getAnalytics(app);
-  }
-  
-  console.log('Firebase initialized successfully');
-} catch (error) {
-  console.warn('Firebase initialization failed:', error.message);
-  
-  // In demo mode, provide mock auth object
-  if (process.env.REACT_APP_FORCE_DEMO_MODE === 'true') {
-    console.log('Running in demo mode - Firebase errors are expected');
+// Check if demo mode is enabled before initializing Firebase
+const isDemoMode = process.env.REACT_APP_FORCE_DEMO_MODE === 'true';
+
+if (isDemoMode) {
+  console.log('🔧 Demo mode enabled - Using mock Firebase services');
+  // Provide mock auth object for demo mode
+  auth = {
+    currentUser: null,
+    onAuthStateChanged: () => () => {},
+    signOut: () => Promise.resolve(),
+    signInWithEmailAndPassword: () => Promise.reject(new Error('Demo mode'))
+  };
+} else {
+  try {
+    // Only initialize Firebase if not in demo mode
+    if (isValidConfig()) {
+      // Initialize Firebase
+      app = initializeApp(firebaseConfig);
+      
+      // Initialize Firebase Authentication
+      auth = getAuth(app);
+      
+      // Initialize Analytics only if config is valid
+      if (typeof window !== 'undefined') {
+        try {
+          analytics = getAnalytics(app);
+        } catch (analyticsError) {
+          console.warn('Firebase Analytics initialization failed:', analyticsError.message);
+          // Analytics failure is not critical, continue without it
+        }
+      }
+      
+      console.log('Firebase initialized successfully');
+    } else {
+      console.warn('Firebase configuration is invalid - some features may not work');
+      // Provide basic mock auth when config is invalid
+      auth = {
+        currentUser: null,
+        onAuthStateChanged: () => () => {},
+        signOut: () => Promise.resolve(),
+        signInWithEmailAndPassword: () => Promise.reject(new Error('Invalid config'))
+      };
+    }
+  } catch (error) {
+    console.error('Firebase initialization failed:', error.message);
+    
+    // Provide helpful error messages based on error type
+    if (error.message.includes('API key not valid')) {
+      console.error('🔥 Firebase Error: Invalid API key detected!');
+      console.error('📋 Please check your Firebase configuration:');
+      console.error('1. Ensure you have a valid Firebase project');
+      console.error('2. Check your API key in environment variables');
+      console.error('3. Verify the project ID matches your Firebase console');
+      console.error('4. Make sure the project is not deleted or suspended');
+      console.error('💡 Or enable demo mode by setting REACT_APP_FORCE_DEMO_MODE=true');
+    }
+    
+    // Provide fallback mock auth object
     auth = {
       currentUser: null,
       onAuthStateChanged: () => () => {},
       signOut: () => Promise.resolve(),
-      signInWithEmailAndPassword: () => Promise.reject(new Error('Demo mode'))
+      signInWithEmailAndPassword: () => Promise.reject(new Error('Firebase initialization failed'))
     };
   }
 }

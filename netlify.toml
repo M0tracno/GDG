@@ -3,19 +3,26 @@
   publish = "build"
 
 [build.environment]
-  REACT_APP_FORCE_DEMO_MODE = "true"
   NODE_ENV = "production"
   NPM_CONFIG_PRODUCTION = "false"
   CI = "false"
   NODE_VERSION = "18.19.1"
   
-  # Firebase Demo Configuration (Replace with real values)
-  REACT_APP_FIREBASE_API_KEY = "AIzaSyBvOkBB5hjkFkRhHI0K9Q8X7Y3Z4A5B6C7"
-  REACT_APP_FIREBASE_AUTH_DOMAIN = "gdc-school-test.firebaseapp.com"
-  REACT_APP_FIREBASE_PROJECT_ID = "gdc-school-test"
-  REACT_APP_FIREBASE_STORAGE_BUCKET = "gdc-school-test.appspot.com"
-  REACT_APP_FIREBASE_MESSAGING_SENDER_ID = "123456789012"
-  REACT_APP_FIREBASE_APP_ID = "1:123456789012:web:abcdef123456789"
+  # 🚨 CRITICAL: Replace these with your ACTUAL Firebase credentials
+  # Get these from: https://console.firebase.google.com
+  # Go to Project Settings → General → Your apps → Firebase SDK snippet
+  
+  # Firebase Production Configuration (REPLACE WITH REAL VALUES)
+  REACT_APP_FIREBASE_API_KEY = "AIzaSyBvOkBB5hjkFkRhHI0K9Q8X7Y3Z4A5B6C7"  # ⚠️ REPLACE WITH REAL API KEY
+  REACT_APP_FIREBASE_AUTH_DOMAIN = "gdc-school-test.firebaseapp.com"       # ⚠️ REPLACE WITH REAL DOMAIN
+  REACT_APP_FIREBASE_PROJECT_ID = "gdc-school-test"                        # ⚠️ REPLACE WITH REAL PROJECT ID
+  REACT_APP_FIREBASE_STORAGE_BUCKET = "gdc-school-test.appspot.com"        # ⚠️ REPLACE WITH REAL BUCKET
+  REACT_APP_FIREBASE_MESSAGING_SENDER_ID = "123456789012"                  # ⚠️ REPLACE WITH REAL SENDER ID
+  REACT_APP_FIREBASE_APP_ID = "1:123456789012:web:abcdef123456789"         # ⚠️ REPLACE WITH REAL APP ID
+  REACT_APP_FIREBASE_MEASUREMENT_ID = "G-ABCDEFGHIJ"                       # ⚠️ REPLACE WITH REAL MEASUREMENT ID
+  
+  # Enable demo mode until real Firebase is configured
+  REACT_APP_FORCE_DEMO_MODE = "true"
   REACT_APP_FIREBASE_MEASUREMENT_ID = "G-ABCDEFGHIJ"
   
   # AI Service Demo Configuration
@@ -32,6 +39,10 @@
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
   for = "/static/*"
