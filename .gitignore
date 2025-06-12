@@ -95,3 +95,6 @@ Thumbs.db
 .dataconnect
 
 .vercel
+
+# Local Netlify folder
+.netlify
