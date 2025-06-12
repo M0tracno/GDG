@@ -23,7 +23,6 @@
   
   # Enable demo mode until real Firebase is configured
   REACT_APP_FORCE_DEMO_MODE = "true"
-  REACT_APP_FIREBASE_MEASUREMENT_ID = "G-ABCDEFGHIJ"
   
   # AI Service Demo Configuration
   REACT_APP_GEMINI_API_KEY = "demo-key-for-testing"
