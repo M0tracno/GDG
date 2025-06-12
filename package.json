@@ -8,6 +8,7 @@
     "start:fast": "set REACT_APP_USE_MOCK_SERVICES=true & set GENERATE_SOURCEMAP=false & react-app-rewired start",
     "start:prod": "set REACT_APP_USE_MOCK_SERVICES=false & react-app-rewired start",
     "build": "set \"CI=\" && react-app-rewired build",
+    "build:netlify": "react-app-rewired build",
     "analyze": "set ANALYZE=true && react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",

@@ -1,5 +1,5 @@
 [build]
-  command = "npm ci && npm run build"
+  command = "npm ci && npm run build:netlify"
   publish = "build"
 
 [build.environment]
@@ -7,6 +7,7 @@
   NODE_ENV = "production"
   NPM_CONFIG_PRODUCTION = "false"
   CI = "false"
+  NODE_VERSION = "18.19.1"
 
 [[redirects]]
   from = "/*"
