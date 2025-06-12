@@ -111,15 +111,16 @@ export function AuthProvider({ children }) {
 
   // Login function with role parameter
   const login = async (email, password, role) => {
-    try {
-      // Get the API base URL from environment or use fallback
+    try {      // Get the API base URL from environment or use fallback
       const apiBaseUrl = process.env.REACT_APP_API_URL || 
                        (window.location.origin.includes('localhost') ? 'http://localhost:5000' : window.location.origin);
       
       console.log('Login attempt:', { email, role, apiBaseUrl });
       
-      // Use the mockLoginService for development/demo mode
-      if (process.env.NODE_ENV === 'development' || process.env.REACT_APP_USE_MOCK_AUTH === 'true') {
+      // Use the mockLoginService for development/demo mode OR production demo mode
+      if (process.env.NODE_ENV === 'development' || 
+          process.env.REACT_APP_USE_MOCK_AUTH === 'true' || 
+          process.env.REACT_APP_FORCE_DEMO_MODE === 'true') {
         console.log('Using mock authentication in demo mode');
         
         // Simulate network delay

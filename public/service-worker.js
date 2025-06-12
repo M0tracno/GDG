@@ -45,7 +45,20 @@ self.addEventListener('activate', event => {
 // from the network before returning it to the page.
 self.addEventListener('fetch', event => {
   // Skip cross-origin requests, like those for Google Analytics.
-  if (event.request.url.startsWith(self.location.origin)) {
+  // Skip API requests to prevent caching POST/PUT/DELETE methods
+  // Also skip any authentication-related requests
+  if (event.request.url.startsWith(self.location.origin) && 
+      !event.request.url.includes('/api/') &&
+      !event.request.url.includes('/auth/') &&
+      event.request.method === 'GET' &&
+      // Only cache static resources
+      (event.request.url.includes('/static/') || 
+       event.request.url.endsWith('.js') || 
+       event.request.url.endsWith('.css') || 
+       event.request.url.endsWith('.png') || 
+       event.request.url.endsWith('.jpg') || 
+       event.request.url.endsWith('.ico') || 
+       event.request.url.endsWith('.html'))) {
     event.respondWith(
       caches.match(event.request).then(cachedResponse => {
         if (cachedResponse) {

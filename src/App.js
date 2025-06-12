@@ -24,6 +24,8 @@ import ParentLogin from './pages/ParentLogin';
 import AdminLogin from './pages/AdminLogin';
 import SetupPassword from './pages/SetupPassword';
 import NotFound from './pages/NotFound';
+import DemoBanner from './components/common/DemoBanner';
+import { isDemoMode } from './config/productionDemo';
 
 // Enhanced App.js with Phase 1 improvements
 
@@ -187,10 +189,11 @@ function App() {
     // Set document title to app name
     document.title = APP_NAME;
   }, [isDeployed]);
-
   return (
     <ThemeProvider>
       <CssBaseline />
+      {/* Demo Banner - show if in demo mode */}
+      {isDemoMode() && <DemoBanner />}
       <OptimizedPhase2ServicesProvider>
         <EnhancedErrorBoundary>
           <AuthProvider>
