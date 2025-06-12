@@ -252,8 +252,7 @@ const ReportsAnalyticsNew = () => {
               <Typography variant="body2">Total Users</Typography>
             </CardContent>
           </MetricCard>
-        </Grid>
-        <Grid size={{xs:12,sm:6,md:2,md:2.4}}>
+        </Grid>        <Grid size={{xs:12,sm:6,md:2.4}}>
           <MetricCard>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
@@ -266,7 +265,7 @@ const ReportsAnalyticsNew = () => {
             </CardContent>
           </MetricCard>
         </Grid>
-        <Grid size={{xs:12,sm:6,md:2,md:2.4}}>
+        <Grid size={{xs:12,sm:6,md:2.4}}>
           <MetricCard>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
@@ -279,7 +278,7 @@ const ReportsAnalyticsNew = () => {
             </CardContent>
           </MetricCard>
         </Grid>
-        <Grid size={{xs:12,sm:6,md:2,md:2.4}}>
+        <Grid size={{xs:12,sm:6,md:2.4}}>
           <MetricCard>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>
@@ -292,7 +291,7 @@ const ReportsAnalyticsNew = () => {
             </CardContent>
           </MetricCard>
         </Grid>
-        <Grid size={{xs:12,sm:6,md:2,md:2.4}}>
+        <Grid size={{xs:12,sm:6,md:2.4}}>
           <MetricCard>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 1 }}>

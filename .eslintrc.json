@@ -5,8 +5,23 @@
   ],
   "rules": {
     "no-unused-vars": "warn",
-    "import/no-anonymous-default-export": "warn",
     "react-hooks/exhaustive-deps": "warn",
-    "no-useless-escape": "warn"
-  }
-} 
+    "no-useless-escape": "warn",
+    "no-dupe-keys": "error",
+    "no-dupe-class-members": "error",
+    "import/no-anonymous-default-export": "warn",
+    "default-case": "warn",
+    "no-unreachable": "warn"
+  },
+  "overrides": [
+    {
+      "files": [
+        "**/*.test.js",
+        "**/*.test.jsx"
+      ],
+      "rules": {
+        "no-unused-vars": "off"
+      }
+    }
+  ]
+}
