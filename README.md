@@ -1,4 +1,4 @@
-# 🎓 AI Teacher Assistant
+# 🎓 Gurukul AI
 
 An AI-powered educational platform built with React that automates grading, provides personalized feedback, and generates quizzes using Google's Gemini and Vertex AI.
 
