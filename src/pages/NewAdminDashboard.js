@@ -23,6 +23,7 @@ import {
   useMediaQuery,
   Menu,
   MenuItem,
+  styled,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
@@ -52,62 +53,72 @@ import SystemSettingsNew from '../components/admin/SystemSettingsNew';
 
 const drawerWidth = 280;
 
-const useStyles = {
-  appBar: {
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    backdropFilter: 'blur(20px)',
-    borderBottom: 'none',
-    boxShadow: '0 8px 32px rgba(31, 38, 135, 0.15)',
-  },
-  drawer: {
+const appBarStyles = {
+  background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+  backdropFilter: 'blur(20px)',
+  borderBottom: 'none',
+  boxShadow: '0 4px 20px rgba(30, 60, 114, 0.15)',
+};
+
+const drawerStyles = {
+  width: drawerWidth,
+  flexShrink: 0,
+  '& .MuiDrawer-paper': {
     width: drawerWidth,
-    flexShrink: 0,
-    '& .MuiDrawer-paper': {
-      width: drawerWidth,
-      background: 'linear-gradient(180deg, #2D3748 0%, #1A202C 100%)',
-      color: 'white',
-      border: 'none',
-      boxShadow: '4px 0 20px rgba(0, 0, 0, 0.1)',
-    },
-  },  content: {
-    flexGrow: 1,
-    backgroundColor: '#f8f9fa', // Use solid color instead of gradient
-    minHeight: '100vh',
-    overflow: 'hidden',
-    width: '100%', // Ensure full width
-    margin: 0, // Remove any margins
-    padding: 0, // Remove any padding that might cause gaps
-  },
-  userSection: {
-    padding: 24,
-    textAlign: 'center',
-    background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
-    margin: 16,
-    borderRadius: 16,
-    border: '1px solid rgba(255, 255, 255, 0.1)',
-  },
-  navItem: {
-    margin: '8px 16px',
-    borderRadius: 12,
-    transition: 'all 0.3s ease',
-    '&:hover': {
-      background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)',
-      transform: 'translateX(8px)',
-    },
-    '&.active': {
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
-    },
-  },
-  menuIcon: {
+    background: 'linear-gradient(180deg, #1a202c 0%, #2d3748 100%)',
     color: 'white',
-    minWidth: 48,
+    border: 'none',
+    boxShadow: '4px 0 20px rgba(0, 0, 0, 0.1)',
   },
-  menuText: {
-    '& .MuiTypography-root': {
-      fontWeight: 500,
-      fontSize: '0.95rem',
-    },
+};
+
+const contentStyles = {
+  flexGrow: 1,
+  backgroundColor: '#f7fafc',
+  minHeight: '100vh',
+  overflow: 'hidden',
+  width: '100%',
+  margin: 0,
+  padding: 0,
+};
+
+const userSectionStyles = {
+  padding: 24,
+  textAlign: 'center',
+  background: 'linear-gradient(135deg, rgba(30, 60, 114, 0.15) 0%, rgba(42, 82, 152, 0.15) 100%)',
+  margin: 16,
+  borderRadius: 16,
+  border: '1px solid rgba(255, 255, 255, 0.1)',
+  backdropFilter: 'blur(10px)',
+};
+
+const navItemStyles = {
+  margin: '6px 16px',
+  borderRadius: 12,
+  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+  position: 'relative',
+  overflow: 'hidden',
+  cursor: 'pointer',
+  '&:hover': {
+    background: 'linear-gradient(135deg, rgba(30, 60, 114, 0.2) 0%, rgba(42, 82, 152, 0.2) 100%)',
+    transform: 'translateX(8px)',
+  },
+};
+
+const activeNavItemStyles = {
+  ...navItemStyles,
+  background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+  boxShadow: '0 4px 15px rgba(30, 60, 114, 0.4)',
+};
+
+const menuIconStyles = {
+  color: 'white',
+  minWidth: 48,
+};
+
+const menuTextStyles = {  '& .MuiTypography-root': {
+    fontWeight: 500,
+    fontSize: '0.95rem',
   },
 };
 
@@ -200,17 +211,32 @@ function NewAdminDashboard() {
   };
 
   const adminName = currentUser?.displayName || 'Administrator';
-
   const drawer = (
     <div>
-      <div style={useStyles.userSection}>
-        <Avatar sx={{ width: 64, height: 64, margin: '0 auto 16px', bgcolor: '#667eea' }}>
-          <AccountCircleIcon sx={{ fontSize: 40 }} />
+      <div style={userSectionStyles}>
+        <Avatar sx={{ 
+          width: 72, 
+          height: 72, 
+          margin: '0 auto 16px', 
+          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+          border: '3px solid rgba(255, 255, 255, 0.2)',
+          boxShadow: '0 8px 25px rgba(30, 60, 114, 0.3)',
+        }}>
+          <AccountCircleIcon sx={{ fontSize: 48, color: 'white' }} />
         </Avatar>
-        <Typography variant="h6" sx={{ color: 'white', fontWeight: 600 }}>
+        <Typography variant="h6" sx={{ 
+          color: 'white', 
+          fontWeight: 600, 
+          fontSize: '1.1rem',
+          textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+        }}>
           {adminName}
         </Typography>
-        <Typography variant="body2" sx={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+        <Typography variant="body2" sx={{ 
+          color: 'rgba(255, 255, 255, 0.8)', 
+          fontWeight: 400,
+          fontSize: '0.875rem',
+        }}>
           System Administrator
         </Typography>
       </div>
@@ -226,18 +252,14 @@ function NewAdminDashboard() {
               key={item.label}
               component="div"
               onClick={() => navigate(`/admin-dashboard/${item.path}`)}
-              sx={{
-                ...useStyles.navItem,
-                ...(isActive && useStyles.navItem['&.active']),
-                cursor: 'pointer',
-              }}
+              sx={isActive ? activeNavItemStyles : navItemStyles}
             >
-              <ListItemIcon sx={useStyles.menuIcon}>
+              <ListItemIcon sx={menuIconStyles}>
                 <IconComponent />
               </ListItemIcon>
               <ListItemText 
                 primary={item.label} 
-                sx={useStyles.menuText}
+                sx={menuTextStyles}
               />
             </ListItem>
           );
@@ -248,20 +270,19 @@ function NewAdminDashboard() {
           component="div"
           onClick={handleLogout}
           sx={{
-            ...useStyles.navItem,
+            ...navItemStyles,
             backgroundColor: 'rgba(244, 67, 54, 0.1)',
             '&:hover': {
               backgroundColor: 'rgba(244, 67, 54, 0.2)',
             },
-            cursor: 'pointer',
           }}
         >
-          <ListItemIcon sx={useStyles.menuIcon}>
+          <ListItemIcon sx={menuIconStyles}>
             <LogoutIcon />
           </ListItemIcon>
           <ListItemText 
             primary="Logout" 
-            sx={useStyles.menuText}
+            sx={menuTextStyles}
           />
         </ListItem>
       </Box>
@@ -271,11 +292,10 @@ function NewAdminDashboard() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      
-      <AppBar
+        <AppBar
         position="fixed"
         sx={{
-          ...useStyles.appBar,
+          ...appBarStyles,
           zIndex: theme.zIndex.drawer + 1,
         }}
       >
@@ -287,19 +307,60 @@ function NewAdminDashboard() {
             sx={{ mr: 2, display: { md: 'none' } }}
           >
             <MenuIcon />
-          </IconButton>
-            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, fontWeight: 600 }}>
+          </IconButton>          <Typography variant="h6" noWrap component="div" sx={{ 
+            flexGrow: 1, 
+            fontWeight: 600,
+            fontSize: '1.25rem',
+            color: 'white',
+            textShadow: '0 2px 4px rgba(0,0,0,0.3)',
+          }}>
             Educational Management System - Admin Dashboard
           </Typography>
 
-          <IconButton color="inherit" sx={{ mr: 1 }} onClick={handleNotificationClick}>
-            <Badge badgeContent={notifications} color="error">
+          <IconButton 
+            color="inherit" 
+            sx={{ 
+              mr: 2,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.1)',
+                transform: 'scale(1.1)',
+              },
+            }} 
+            onClick={handleNotificationClick}
+          >
+            <Badge 
+              badgeContent={notifications} 
+              color="error"
+              sx={{
+                '& .MuiBadge-badge': {
+                  background: 'linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%)',
+                  color: 'white',
+                  fontWeight: 600,
+                },
+              }}
+            >
               <NotificationsIcon />
             </Badge>
           </IconButton>
 
-          <IconButton color="inherit" onClick={handleProfileClick}>
-            <Avatar sx={{ bgcolor: 'rgba(255, 255, 255, 0.2)' }}>
+          <IconButton 
+            color="inherit" 
+            onClick={handleProfileClick}
+            sx={{
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                background: 'rgba(255, 255, 255, 0.1)',
+                transform: 'scale(1.05)',
+              },
+            }}
+          >
+            <Avatar sx={{ 
+              bgcolor: 'rgba(255, 255, 255, 0.2)', 
+              width: 40, 
+              height: 40,
+              border: '2px solid rgba(255, 255, 255, 0.3)',
+            }}>
               <AccountCircleIcon />
             </Avatar>
           </IconButton>
@@ -309,26 +370,24 @@ function NewAdminDashboard() {
       <Box
         component="nav"
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
-      >
-        <Drawer
+      >        <Drawer
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
           ModalProps={{ keepMounted: true }}
           sx={{
             display: { xs: 'block', md: 'none' },
-            ...useStyles.drawer,
+            ...drawerStyles,
           }}
         >
           {drawer}
-        </Drawer>
-          <Drawer
+        </Drawer>          <Drawer
           variant="permanent"
           sx={{
             display: { xs: 'none', md: 'block' },
-            ...useStyles.drawer,
+            ...drawerStyles,
             '& .MuiDrawer-paper': {
-              ...useStyles.drawer['& .MuiDrawer-paper'],
+              ...drawerStyles['& .MuiDrawer-paper'],
               position: 'fixed',
               height: '100vh',
               top: 0,
@@ -342,7 +401,7 @@ function NewAdminDashboard() {
       </Box>      <Box
         component="main"
         sx={{
-          ...useStyles.content,
+          ...contentStyles,
           width: { md: `calc(100% - ${drawerWidth}px)` },
           ml: { md: `${drawerWidth}px` },
           pt: '64px', // AppBar height
@@ -351,13 +410,27 @@ function NewAdminDashboard() {
           pb: 0, // Remove bottom padding
           overflow: 'hidden', // Prevent gaps
         }}
-      >
-        <Box sx={{ 
+      ><Box sx={{ 
           p: 3, 
           height: 'calc(100vh - 64px)', 
           overflow: 'auto',
-          backgroundColor: '#f8f9fa', // Ensure consistent background
-          width: '100%' // Ensure full width
+          backgroundColor: '#f7fafc',
+          background: 'linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)',
+          width: '100%',
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'rgba(0,0,0,0.1)',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+            borderRadius: '10px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            background: 'linear-gradient(135deg, #2a5298 0%, #1e3c72 100%)',
+          },
         }}>
           {loading && (
             <Box display="flex" justifyContent="center" alignItems="center" minHeight="200px">
