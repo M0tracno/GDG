@@ -382,10 +382,18 @@ const DashboardOverview = ({ dashboardData, loading }) => {
     systemLoad: 0,
   };
 
-  const stats = dashboardData?.summary || defaultStats;
-
-  return (
-    <Box>      <Box display="flex" justifyContent="space-between" alignItems="center" mb={4}>
+  const stats = dashboardData?.summary || defaultStats;  return (
+    <Box sx={{ 
+      p: 2, // Reduced padding
+      pt: 1, // Minimal top padding
+      height: '100%',
+      minHeight: '100%',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 0, // Remove any gaps between sections
+      backgroundColor: 'transparent', // Ensure background is transparent
+    }}>      <Box display="flex" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
         <Box>
           <Typography variant="h4" sx={{ 
             fontWeight: 700, 
@@ -438,8 +446,8 @@ const DashboardOverview = ({ dashboardData, loading }) => {
           />
         </Box>
       </Box>      {/* Main Statistics */}
-      <Grid container spacing={3} mb={4}>
-        <Grid size={{xs:12,sm:6,md:3}}>
+      <Grid container spacing={3} sx={{ mb: 2 }}>
+        <Grid item xs={12} sm={6} md={3}>
           <StatCard
             title="Students"
             value={stats.totalStudents || 0}
@@ -448,9 +456,8 @@ const DashboardOverview = ({ dashboardData, loading }) => {
             color="#4f46e5"
             trend="12"
           />
-        </Grid>
-        
-        <Grid size={{xs:12,sm:6,md:3}}>
+        </Grid>        
+        <Grid item xs={12} sm={6} md={3}>
           <StatCard
             title="Quizzes"
             value={stats.totalQuizzes || 0}
@@ -459,9 +466,8 @@ const DashboardOverview = ({ dashboardData, loading }) => {
             color="#7c3aed"
             trend="8"
           />
-        </Grid>
-        
-        <Grid size={{xs:12,sm:6,md:3}}>
+        </Grid>        
+        <Grid item xs={12} sm={6} md={3}>
           <StatCard
             title="Active"
             value={stats.activeUsers || 0}
@@ -470,9 +476,8 @@ const DashboardOverview = ({ dashboardData, loading }) => {
             color="#ec4899"
             trend="15"
           />
-        </Grid>
-        
-        <Grid size={{xs:12,sm:6,md:3}}>
+        </Grid>        
+        <Grid item xs={12} sm={6} md={3}>
           <StatCard
             title="Parent accounts"
             value={stats.totalParents || 0}
@@ -483,8 +488,8 @@ const DashboardOverview = ({ dashboardData, loading }) => {
           />
         </Grid>
       </Grid>      {/* Secondary Statistics */}
-      <Grid container spacing={3} mb={4}>
-        <Grid size={{xs:12,md:8}}>
+      <Grid container spacing={3} sx={{ mb: 2 }}>
+        <Grid item xs={12} md={8}>
           <Card sx={{ 
             borderRadius: 3, 
             height: '100%',
@@ -537,14 +542,13 @@ const DashboardOverview = ({ dashboardData, loading }) => {
               </List>
             </CardContent>
           </Card>
-        </Grid>
-        
-        <Grid size={{xs:12,md:4}}>
+        </Grid>        
+        <Grid item xs={12} md={4}>
           <SystemHealthCard healthData={dashboardData?.health} />
         </Grid>
       </Grid>      {/* System Alerts */}
-      <Grid container spacing={3}>
-        <Grid size={{xs:12}}>
+      <Grid container spacing={3} sx={{ mb: 0 }}>
+        <Grid item xs={12}>
           <Card sx={{ 
             borderRadius: 3,
             background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',

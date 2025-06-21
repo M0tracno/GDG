@@ -80,6 +80,7 @@ const contentStyles = {
   width: '100%',
   margin: 0,
   padding: 0,
+  position: 'relative', // Ensure proper positioning
 };
 
 const userSectionStyles = {
@@ -407,16 +408,26 @@ function NewAdminDashboard() {
           pt: '64px', // AppBar height
           pl: 0,
           pr: 0,
-          pb: 0, // Remove bottom padding
-          overflow: 'hidden', // Prevent gaps
+          pb: 0,
+          overflow: 'hidden',
+          minHeight: '100vh',
+          backgroundColor: '#f7fafc',
+          position: 'relative',
         }}
-      ><Box sx={{ 
-          p: 3, 
+      >
+        <Box sx={{ 
+          p: 0, // No padding at all
           height: 'calc(100vh - 64px)', 
           overflow: 'auto',
           backgroundColor: '#f7fafc',
           background: 'linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%)',
           width: '100%',
+          margin: 0,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
           '&::-webkit-scrollbar': {
             width: '8px',
           },
