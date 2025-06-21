@@ -496,13 +496,14 @@ class ParentDashboardController {
     if (percentage >= 85) return 'A';
     if (percentage >= 80) return 'A-';
     if (percentage >= 75) return 'B+';
-    if (percentage >= 70) return 'B';
-    if (percentage >= 65) return 'B-';
+    if (percentage >= 70) return 'B';    if (percentage >= 65) return 'B-';
     if (percentage >= 60) return 'C+';
     if (percentage >= 55) return 'C';
     if (percentage >= 50) return 'C-';
     return 'F';
   }
+
+  /**
    * Get grades for a specific child
    */
   async getChildGrades(req, res) {

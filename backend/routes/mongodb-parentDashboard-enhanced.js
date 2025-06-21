@@ -48,16 +48,17 @@ router.get('/dashboard-summary', parentAuth, parentDashboardController.getDashbo
 // Get child dashboard summary by student ID
 router.get('/dashboard/:studentId', parentAuth, parentDashboardController.getChildDashboard);
 
+// TODO: Implement these methods in the controller
 // Send message to teacher
-router.post('/messages', parentAuth, parentDashboardController.sendMessage);
+// router.post('/messages', parentAuth, parentDashboardController.sendMessage);
 
 // Get messages/communications
-router.get('/messages', parentAuth, parentDashboardController.getMessages);
+// router.get('/messages', parentAuth, parentDashboardController.getMessages);
 
 // Schedule meeting with teacher
-router.post('/meetings', parentAuth, parentDashboardController.scheduleMeeting);
+// router.post('/meetings', parentAuth, parentDashboardController.scheduleMeeting);
 
 // Get scheduled meetings
-router.get('/meetings', parentAuth, parentDashboardController.getMeetings);
+// router.get('/meetings', parentAuth, parentDashboardController.getMeetings);
 
 module.exports = router;
